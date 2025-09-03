@@ -1,0 +1,25 @@
+{
+  "name": "cuevision",
+  "version": "1.0.0",
+  "description": "ALEX RAYBRAND!!!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kylan-Thurairajah/CueVision.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kylan-Thurairajah/CueVision/issues"
+  },
+  "homepage": "https://github.com/Kylan-Thurairajah/CueVision#readme",
+  "dependencies": {
+    "puppeteer": "^24.18.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
