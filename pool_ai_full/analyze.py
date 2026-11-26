@@ -5,28 +5,31 @@ from .planning import pick_best_shot, advice_from_best
 
 def analyze_pool_image(bgr, felt_mode='auto', detector='hough'):
     # 1) Rectify via felt
-    quad, mask = find_table_quad(bgr, felt_mode=felt_mode)
-    if quad is not None:
-        warp, H = warp_topdown(bgr, quad)
-        rectified = True
-    else:
-        warp, H = bgr, None
-        rectified = False
+    quad, _ = find_table_quad(bgr, felt_mode=felt_mode)
+    rectified = quad is not None
+    warp = warp_topdown(bgr, quad)[0] if rectified else bgr
 
-    # 2) Detect balls (Hough by default)
-    if detector == 'hough':
-        det = HoughBallDetector(felt_mode=felt_mode)
-        balls, cue_idx = det.detect(warp)
-    else:
+    # 2) Detect balls only on the calibrated table.
+    if detector != 'hough':
         raise ValueError("Unsupported detector; use 'hough'.")
+    balls, cue_idx = HoughBallDetector(felt_mode=felt_mode).detect(warp) if rectified else ([], None)
 
     # 3) Plan shot
-    best = pick_best_shot(warp, balls, cue_idx) if balls else None
-    advice = advice_from_best(best, balls, cue_idx) if balls else "No balls detected."
+    best = pick_best_shot(warp, balls, cue_idx) if cue_idx is not None else None
+    if not rectified:
+        outcome = "no_usable_table"
+        advice = "Could not find the table. Retake the photo with the whole table in view."
+    elif cue_idx is None:
+        outcome = "no_cue_ball"
+        advice = "No cue ball detected. Retake the photo with the cue ball visible."
+    else:
+        outcome = "recommendation" if best is not None else "no_clear_pot"
+        advice = advice_from_best(best, balls, cue_idx)
     overlay = draw_overlay(warp, balls, cue_idx, best) if balls else warp.copy()
 
     return {
         "rectified": rectified,
+        "outcome": outcome,
         "num_balls": len(balls),
         "cue_idx": cue_idx,
         "best": best,

@@ -1,0 +1,31 @@
+name: Backend integration
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest tests/analysis
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: docker compose up --build --wait --wait-timeout 120
+      - run: node --test apps/backend/test/integration.test.mjs
+        env:
+          CUEVISION_TEST_RECOVERY: "1"
+      - if: failure()
+        run: docker compose logs
+      - if: always()
+        run: docker compose down --volumes

@@ -1,0 +1,5 @@
+**
+!Dockerfile.analysis
+!requirements.txt
+!pool_ai_full/
+!pool_ai_full/*.py

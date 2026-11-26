@@ -1,0 +1,80 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cuevision
+      POSTGRES_DB: cuevision
+      # Local Compose only. This service has no published port.
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cuevision -d cuevision"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  analysis:
+    build:
+      context: .
+      dockerfile: Dockerfile.analysis
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready', timeout=2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./apps/backend
+    image: cuevision-backend:local
+    environment: &backend-env
+      DATABASE_URL: postgresql://cuevision@postgres:5432/cuevision
+      REDIS_URL: redis://redis:6379
+      ANALYSIS_URL: http://analysis:8080/analyze
+      DATA_DIR: /data
+      HOST: 0.0.0.0
+      PORT: "8081"
+    volumes:
+      - images:/data
+    ports:
+      - "127.0.0.1:${CUEVISION_PORT:-8081}:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8081/ready').then(response => { if (!response.ok) process.exit(1) }).catch(() => process.exit(1))"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  worker:
+    image: cuevision-backend:local
+    pull_policy: never
+    command: ["node", "dist/main.js", "worker"]
+    environment: *backend-env
+    volumes:
+      - images:/data
+    depends_on:
+      backend:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      analysis:
+        condition: service_healthy
+    init: true
+
+volumes:
+  postgres:
+  redis:
+  images:

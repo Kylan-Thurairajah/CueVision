@@ -1,0 +1,26 @@
+{
+  "name": "@cuevision/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js api",
+    "worker": "node dist/main.js worker",
+    "test:integration": "node --test test/integration.test.mjs"
+  },
+  "dependencies": {
+    "fastify": "^5.0.0",
+    "pg": "^8.0.0",
+    "redis": "^5.0.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.0.0",
+    "typescript": "~5.9.0"
+  }
+}

@@ -5,6 +5,8 @@ __pycache__/
 .audit-deps/
 .pytest_cache/
 node_modules/
+/apps/backend/dist/
+/.cuevision-data/
 .env
 .env.*
 !.env.example
