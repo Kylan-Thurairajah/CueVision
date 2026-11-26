@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+.audit-venv/
+.audit-deps/
+.pytest_cache/
+node_modules/
+.env
+.env.*
+!.env.example
+cookies.json
+/images/
+/scripts/images/
+/result.json
+/overlay.png
