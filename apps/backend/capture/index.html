@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Capture · CueVision</title>
+  <link rel="stylesheet" href="/capture/page.css">
+  <script type="module" src="/capture/page.mjs"></script>
+</head>
+<body>
+  <main>
+    <header><p>CueVision</p><h1>Capture a shot</h1></header>
+    <div class="workspace">
+      <section aria-labelledby="inputs">
+        <h2 id="inputs">Capture source</h2>
+        <label for="felt">Table felt</label>
+        <select id="felt"><option value="auto">Auto-detect</option><option value="green">Green</option><option value="blue">Blue</option></select>
+        <div class="source">
+          <h3>Simulated wearable</h3>
+          <button id="simulate" type="button">Capture sample</button>
+        </div>
+        <div class="source">
+          <label for="photo">Local photo</label>
+          <input id="photo" type="file" accept="image/jpeg,image/png">
+          <button id="upload" type="button">Upload photo</button>
+        </div>
+        <div class="source">
+          <label for="frames">Prerecorded frames</label>
+          <input id="frames" type="file" accept="image/jpeg,image/png" multiple aria-describedby="frame-hint">
+          <p id="frame-hint">Replays up to 12 JPEG or PNG frames in filename order.</p>
+          <button id="replay" type="button">Replay frames</button>
+        </div>
+      </section>
+      <section aria-labelledby="results">
+        <h2 id="results">Capture results</h2>
+        <label class="audio-option"><input id="auto-speech" type="checkbox"> Read advice aloud automatically</label>
+        <p id="audio-status" role="status" hidden></p>
+        <p id="status" role="status">Choose a capture source to begin.</p>
+        <button id="retry" type="button" hidden>Retry</button>
+        <ol id="jobs"></ol>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

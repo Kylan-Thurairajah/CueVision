@@ -25,6 +25,16 @@ jobs:
       - run: node --test apps/backend/test/integration.test.mjs
         env:
           CUEVISION_TEST_RECOVERY: "1"
+      - run: npm --prefix apps/backend run test:capture
+        env:
+          CUEVISION_CAPTURE_TEST_URL: http://127.0.0.1:8081
+      - run: npm ci
+        working-directory: apps/backend
+      - run: npx playwright-core install --with-deps chromium
+        working-directory: apps/backend
+      - run: npm --prefix apps/backend run test:workflow
+        env:
+          CUEVISION_WORKFLOW_URL: http://127.0.0.1:8081
       - if: failure()
         run: docker compose logs
       - if: always()

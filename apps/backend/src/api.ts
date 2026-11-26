@@ -5,6 +5,7 @@ import { join } from "node:path";
 import Fastify, { LogController, type FastifyRequest } from "fastify";
 
 import { type Job, type Store } from "./store.js";
+import { registerCapture } from "./capture.js";
 
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const MAX_MULTIPART_BYTES = MAX_IMAGE_BYTES + 64 * 1024;
@@ -220,5 +221,6 @@ export function buildApi({ store, dataDir }: { store: Store; dataDir: string }) 
     });
   }
 
+  registerCapture(app);
   return app;
 }

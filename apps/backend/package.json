@@ -10,7 +10,9 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/main.js api",
     "worker": "node dist/main.js worker",
-    "test:integration": "node --test test/integration.test.mjs"
+    "test:integration": "node --test test/integration.test.mjs",
+    "test:capture": "node --test test/capture.test.mjs",
+    "test:workflow": "node --test test/workflow.test.mjs"
   },
   "dependencies": {
     "fastify": "^5.0.0",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/pg": "^8.0.0",
+    "playwright-core": "1.65.1",
     "typescript": "~5.9.0"
   }
 }

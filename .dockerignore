@@ -3,3 +3,15 @@
 !requirements.txt
 !pool_ai_full/
 !pool_ai_full/*.py
+!sample_pool_table1.jpg
+!apps/
+!apps/backend/
+!apps/backend/package.json
+!apps/backend/package-lock.json
+!apps/backend/tsconfig.json
+!apps/backend/src/
+!apps/backend/src/*.ts
+!apps/backend/migrations/
+!apps/backend/migrations/*.sql
+!apps/backend/capture/
+!apps/backend/capture/*

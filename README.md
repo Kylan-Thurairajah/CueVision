@@ -18,7 +18,7 @@ With Docker and Docker Compose, run this from the repository root.
 docker compose up --build --wait
 ```
 
-The job API listens on `http://127.0.0.1:8081`. Use the [sample walkthrough](docs/backend.md#submit-a-sample) to submit the included table photo, follow its processing status, and download the annotated PNG. For a standalone analysis of a local photo, see the [Python CLI guide](pool_ai_full/README.md#cli).
+Open `http://127.0.0.1:8081/capture` to capture the sample, upload a photo, or replay a set of frames. Use the [API walkthrough](docs/backend.md#submit-a-sample) for a direct submission or the [Python CLI guide](pool_ai_full/README.md#cli) for standalone analysis. The [grading guide](docs/grading.md) includes checks for the analyzer, backend, and capture workflow.
 
 ## How it works
 

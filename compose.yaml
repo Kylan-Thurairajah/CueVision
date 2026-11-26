@@ -36,7 +36,9 @@ services:
       retries: 20
 
   backend:
-    build: ./apps/backend
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
     image: cuevision-backend:local
     environment: &backend-env
       DATABASE_URL: postgresql://cuevision@postgres:5432/cuevision
